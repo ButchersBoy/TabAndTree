@@ -202,23 +202,22 @@ namespace TabAndTree
         /// </summary>
         public ObservableCollection<InfoElement> Children
         {
-            get;set;
-            //get
-            //{
-            //    return _children;
-            //}
+            get
+            {
+                return _children;
+            }
 
-            //set
-            //{
-            //    if (_children == value)
-            //    {
-            //        return;
-            //    }
+            set
+            {
+                if (_children == value)
+                {
+                    return;
+                }
 
-            //    var oldValue = _children;
-            //    _children = value;
-            //    RaisePropertyChanged(ChildrenPropertyName, oldValue, value, true);
-            //}
+                var oldValue = _children;
+                _children = value;
+                RaisePropertyChanged(ChildrenPropertyName, oldValue, value, true);
+            }
         }
     }
 }
