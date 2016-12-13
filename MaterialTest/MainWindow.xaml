@@ -1,0 +1,44 @@
+﻿<Window x:Class="MaterialTest.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MaterialTest"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        DataContext="{Binding Source={StaticResource Locator}, Path=Main}"
+        Title="MainWindow" Height="350" Width="525">
+
+    <Grid>
+        <materialDesign:DialogHost>
+            <DockPanel  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+
+                <Button Content="Show Dialog" Command="{Binding OpenDialogCommand}" VerticalAlignment="Top"/>
+
+                <materialDesign:PopupBox DockPanel.Dock="Right" HorizontalAlignment="Right"
+                                         VerticalAlignment="Top"
+                                         PlacementMode="BottomAndAlignRightEdges" StaysOpen="False"  Focusable="False">
+
+                    <StackPanel Orientation="Vertical"  >
+                        <Button Content="Show Dialog " ToolTip="Can't close dialog by left button."
+                                            Command="{Binding OpenDialogCommand}" IsTabStop="True" />
+                        <Button Content="Show Dialog"
+                                            Command="{Binding OpenDialogCommand}" IsTabStop="True" />
+                    </StackPanel>
+
+
+                </materialDesign:PopupBox>
+
+                <TextBlock Text="Right Click" DockPanel.Dock="Bottom" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Height="250" Width="200"
+                                Tag="{Binding}" >
+                    <TextBlock.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Command="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.Tag.OpenDialogCommand}" Header="Show Dialog"></MenuItem>
+                        </ContextMenu>
+                    </TextBlock.ContextMenu>
+               
+                </TextBlock>
+            </DockPanel>
+        </materialDesign:DialogHost>
+    </Grid>
+</Window>
