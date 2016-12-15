@@ -43,8 +43,7 @@ namespace MaterialTest.ViewModel
             get
             {
                 return _openDialogCommand
-                    ?? (_openDialogCommand = new RelayCommand(
-                    () =>
+                    ?? (_openDialogCommand = new RelayCommand(async () =>
                     {
                         DialogOpenedEventHandler openedhandler = (sender, eventArgs) =>
                         {
@@ -52,20 +51,23 @@ namespace MaterialTest.ViewModel
                             System.Diagnostics.Debug.WriteLine(sender.ToString());
                             System.Diagnostics.Debug.WriteLine(sender.ToString());
                             System.Diagnostics.Debug.WriteLine(sender.ToString());
+
+                            _activeDialogSession = eventArgs.Session;
                         };
 
                         DialogClosingEventHandler closinghandler = (sender, e) =>
                         {
-
-
+                            _activeDialogSession = null;
                         };
 
-                        DialogHost.Show(new Dialog(), openedhandler, closinghandler);
+                        var theResultFromSessionClose = await DialogHost.Show(new Dialog(), openedhandler, closinghandler);
+                        System.Diagnostics.Debug.WriteLine(theResultFromSessionClose);
                     }));
             }
         }
 
         private RelayCommand _closeDialogCommand;
+        private DialogSession _activeDialogSession;
 
         /// <summary>
         public RelayCommand CloseDialogCommand
@@ -82,7 +84,12 @@ namespace MaterialTest.ViewModel
 
                         //if (false) return;
 
-                        DialogHost.CloseDialogCommand.Execute(new object(), null);
+                        //CloseDialogCommand is a RoutedCommand.  Which means it has to be executed in XAML, for the DialogHost event to correctly detect it.
+                        //So you have to provide a target in the second parameter...
+                        // DialogHost.CloseDialogCommand.Execute(new object(), null);
+                        //...however, you are in a view model, not XAML, so you can use the session:
+                        var myResult = true;
+                        _activeDialogSession?.Close(myResult);
 
                     }));
             }
