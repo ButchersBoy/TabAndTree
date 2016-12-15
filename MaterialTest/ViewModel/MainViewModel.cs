@@ -2,6 +2,7 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using MaterialDesignThemes.Wpf;
+using System;
 
 namespace MaterialTest.ViewModel
 {
@@ -48,10 +49,14 @@ namespace MaterialTest.ViewModel
                     {
                         DialogOpenedEventHandler openedhandler = (sender, eventArgs) =>
                         {
-                            System.Diagnostics.Debug.WriteLine(sender.ToString());
-                            System.Diagnostics.Debug.WriteLine(sender.ToString());
-                            System.Diagnostics.Debug.WriteLine(sender.ToString());
-                            System.Diagnostics.Debug.WriteLine(sender.ToString());
+                            if(eventArgs.Session.Content is Dialog)
+                            {
+                                CloseDialog = () =>
+                                 {
+                                     eventArgs.Session.Close();
+                                 };
+                            }
+
                         };
 
                         DialogClosingEventHandler closinghandler = (sender, e) =>
@@ -64,6 +69,9 @@ namespace MaterialTest.ViewModel
                     }));
             }
         }
+
+
+        Action CloseDialog = () => { };
 
         private RelayCommand _closeDialogCommand;
 
@@ -81,8 +89,9 @@ namespace MaterialTest.ViewModel
                         //i want to add the branch at here.
 
                         //if (false) return;
+                        // CloseDialog();
 
-                        DialogHost.CloseDialogCommand.Execute(new object(), null);
+                       DialogHost.CloseDialogCommand.Execute(new object(), null);
 
                     }));
             }
