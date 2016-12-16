@@ -2,6 +2,7 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using MaterialDesignThemes.Wpf;
+using System;
 
 namespace MaterialTest.ViewModel
 {
@@ -47,12 +48,23 @@ namespace MaterialTest.ViewModel
                     {
                         DialogOpenedEventHandler openedhandler = (sender, eventArgs) =>
                         {
+
                             System.Diagnostics.Debug.WriteLine(sender.ToString());
                             System.Diagnostics.Debug.WriteLine(sender.ToString());
                             System.Diagnostics.Debug.WriteLine(sender.ToString());
                             System.Diagnostics.Debug.WriteLine(sender.ToString());
 
                             _activeDialogSession = eventArgs.Session;
+
+                            //if(eventArgs.Session.Content is Dialog)
+                            //{
+                            //    CloseDialog = () =>
+                            //     {
+                            //         eventArgs.Session.Close();
+                            //     };
+                            //}
+
+
                         };
 
                         DialogClosingEventHandler closinghandler = (sender, e) =>
@@ -65,6 +77,9 @@ namespace MaterialTest.ViewModel
                     }));
             }
         }
+
+
+        Action CloseDialog = () => { };
 
         private RelayCommand _closeDialogCommand;
         private DialogSession _activeDialogSession;
@@ -83,6 +98,8 @@ namespace MaterialTest.ViewModel
                         //i want to add the branch at here.
 
                         //if (false) return;
+                        // CloseDialog();
+
 
                         //CloseDialogCommand is a RoutedCommand.  Which means it has to be executed in XAML, for the DialogHost event to correctly detect it.
                         //So you have to provide a target in the second parameter...
@@ -90,6 +107,9 @@ namespace MaterialTest.ViewModel
                         //...however, you are in a view model, not XAML, so you can use the session:
                         var myResult = true;
                         _activeDialogSession?.Close(myResult);
+
+                       //DialogHost.CloseDialogCommand.Execute(new object(), null);
+
 
                     }));
             }
